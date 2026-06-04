@@ -1,28 +1,156 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="section">
-        <div class="container">
-            <h1 class="section-title">Haqqımda</h1>
-            <p class="lead">
-                Burada özünüz haqqında ətraflı yazın — peşəkar yolunuz, təcrübəniz
-                və dəyərləriniz. Bu mətni öz məlumatlarınızla dəyişdirin.
-            </p>
+<div class="about-page">
+    <div class="container">
 
-            <div class="about-grid">
-                <div>
-                    <h3>Təhsil</h3>
-                    <p>Təhsil məlumatlarınız.</p>
+        {{-- Səhifə başlığı --}}
+        <header class="about-header">
+            <span class="eyebrow">Haqqımda</span>
+            <h1>Namig Pashayev</h1>
+            <p class="about-tagline">
+                Digital Marketing Specialist, veb developer və rəqəmsal strategiya
+                məsləhətçisi. <strong>vebsite.az</strong> qurucusu.
+            </p>
+        </header>
+
+        <div class="about-layout">
+
+            {{-- Sol sütun — foto, statistika, sosial --}}
+            <aside class="about-side">
+                <div class="about-photo" aria-hidden="true">Şəkil yeri</div>
+
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-num">50+</span><span class="stat-label">Layihə</span></div>
+                    <div class="stat-box"><span class="stat-num">2+</span><span class="stat-label">İl təcrübə</span></div>
+                    <div class="stat-box"><span class="stat-num">30+</span><span class="stat-label">Müştəri</span></div>
+                    <div class="stat-box"><span class="stat-num">8</span><span class="stat-label">Kurs modulu</span></div>
                 </div>
-                <div>
-                    <h3>Təcrübə</h3>
-                    <p>İş təcrübəniz.</p>
+
+                <div class="social-row">
+                    <a href="https://www.linkedin.com/in/namigpashayev/" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="#" rel="noopener">Instagram</a>
+                    <a href="#" rel="noopener">Facebook</a>
                 </div>
-                <div>
-                    <h3>Bacarıqlar</h3>
-                    <p>Əsas bacarıqlarınız.</p>
-                </div>
+            </aside>
+
+            {{-- Sağ sütun — bio və detallar --}}
+            <div class="about-main">
+
+                {{-- Bio --}}
+                <section class="about-block">
+                    <h2>Kim mənəm?</h2>
+                    <div class="about-bio">
+                        <p>Mən Namig Pashayev — rəqəmsal marketinq sahəsində 2+ il təcrübəyə malik mütəxəssisəm. Meta Ads, TikTok Ads, Google Ads, DV360 kimi platformalarda reklam kampaniyalarının idarə edilməsi, veb saytların hazırlanması və marketinq strategiyalarının qurulması ilə məşğulam.</p>
+                        <p>vebsite.az şirkətinin qurucusu olaraq, müxtəlif biznes müştərilərinə kompleks rəqəmsal həllər — veb sayt hazırlanması, reklam idarəetməsi, SMM, AI chatbot inteqrasiyası və kontent xidmətləri təqdim edirəm.</p>
+                    </div>
+                </section>
+
+                {{-- Bacarıqlar --}}
+                <section class="about-block">
+                    <h2>Bacarıqlar</h2>
+                    <div class="skills">
+                        @foreach ([
+                            ['Meta Ads (Facebook & Instagram)', 95],
+                            ['Google Ads', 90],
+                            ['Google Tag Manager & GA4', 92],
+                            ['DV360 (Programmatic)', 85],
+                            ['Veb İnkişaf (HTML/CSS/JS)', 88],
+                            ['SMM & Kontent Strategiya', 90],
+                        ] as [$name, $level])
+                            <div class="skill">
+                                <div class="skill-head">
+                                    <span>{{ $name }}</span>
+                                    <span class="skill-pct">{{ $level }}%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" style="width: {{ $level }}%"></div></div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+
+                {{-- Karyera --}}
+                <section class="about-block">
+                    <h2>Karyera</h2>
+                    <div class="timeline">
+                        <div class="tl-item tl-active">
+                            <span class="tl-date">2020 — Hal-hazırda</span>
+                            <h3>Qurucu &amp; Digital Marketing Specialist</h3>
+                            <p class="tl-company">vebsite.az</p>
+                            <p>Veb inkişaf, rəqəmsal reklam, SMM, kontent idarəetmə və AI chatbot xidmətləri. 30+ müştəri ilə uğurlu əməkdaşlıq. GTM &amp; GA4 kursunun yaradılması.</p>
+                        </div>
+                        <div class="tl-item">
+                            <span class="tl-date">2019 — 2020</span>
+                            <h3>Digital Marketing Manager</h3>
+                            <p>Rəqəmsal marketinq kampaniyalarının planlaşdırılması və icrası, performans analitikası, ROI optimallaşdırma.</p>
+                        </div>
+                        <div class="tl-item">
+                            <span class="tl-date">2018 — 2019</span>
+                            <h3>Content Manager &amp; Copywriter</h3>
+                            <p>Kontent strategiyası, sosial media idarəetməsi, reklam mətnlərinin yazılması, brend kommunikasiyası.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {{-- Startuplar --}}
+                <section class="about-block">
+                    <h2>Startuplarım</h2>
+                    <div class="startup-grid">
+                        <article class="startup-card">
+                            <span class="eyebrow">Veb Agentlik</span>
+                            <h3>vebsite.az</h3>
+                            <p>Veb inkişaf və rəqəmsal marketinq agentliyi.</p>
+                        </article>
+                        <article class="startup-card">
+                            <span class="eyebrow">E-Commerce</span>
+                            <h3>ecommerce.vebsite.az</h3>
+                            <p>Bizneslər üçün e-commerce platforması.</p>
+                        </article>
+                        <article class="startup-card">
+                            <span class="eyebrow">Təhsil</span>
+                            <h3>Digital Marketing Academy</h3>
+                            <p>GTM, GA4 üzrə professional kurslar.</p>
+                        </article>
+                        <article class="startup-card">
+                            <span class="eyebrow">AI Həllər</span>
+                            <h3>AI Chatbot Service</h3>
+                            <p>Instagram DM avtomatlaşdırması.</p>
+                        </article>
+                    </div>
+                </section>
+
+                {{-- Sertifikatlar --}}
+                <section class="about-block">
+                    <h2>Sertifikatlar</h2>
+                    <div class="cert-grid">
+                        @foreach ([
+                            ['🎯', 'Google Ads Search', 'Google'],
+                            ['📊', 'Google Analytics', 'Google'],
+                            ['📱', 'Meta Blueprint', 'Meta'],
+                            ['🏷️', 'Google Tag Manager', 'Google'],
+                            ['📈', 'Google Ads Display', 'Google'],
+                            ['🎬', 'Google Ads Video', 'Google'],
+                        ] as [$icon, $cert, $org])
+                            <div class="cert-card">
+                                <div class="cert-icon">{{ $icon }}</div>
+                                <div class="cert-name">{{ $cert }}</div>
+                                <div class="cert-org">{{ $org }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+
             </div>
         </div>
+    </div>
+
+    {{-- CTA --}}
+    <section class="about-cta">
+        <div class="container">
+            <h2>Birlikdə işləyək?</h2>
+            <p>Layihənizi müzakirə etmək üçün əlaqə saxlayın.</p>
+            <a href="{{ route('contact') }}" class="btn btn-primary">Əlaqə saxla →</a>
+        </div>
     </section>
+</div>
 @endsection

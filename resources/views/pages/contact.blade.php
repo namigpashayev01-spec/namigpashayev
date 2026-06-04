@@ -1,10 +1,30 @@
 @extends('layouts.app')
 
+@push('jsonld')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "ContactPage",
+    "name": "Əlaqə — Namig Pashayev",
+    "url": "{{ route('contact') }}",
+    "mainEntity": {
+        "@@type": "Person",
+        "name": "Namig Pashayev",
+        "jobTitle": "Rəqəmsal Marketinq üzrə Mütəxəssis",
+        "email": "namigpashayev01@gmail.com"
+    }
+}
+</script>
+@endpush
+
 @section('content')
     <section class="section">
         <div class="container container-narrow">
             <h1 class="section-title">Əlaqə</h1>
-            <p class="lead">Sual və ya təklifiniz varsa, formanı doldurun.</p>
+            <p class="lead">
+                Layihəniz, sualınız və ya əməkdaşlıq təklifiniz var? Formanı doldurun —
+                ilk konsultasiya pulsuzdur, tezliklə cavab verəcəyəm.
+            </p>
 
             {{-- Uğur mesajı --}}
             @if (session('success'))
