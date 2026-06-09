@@ -19,37 +19,34 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <h1 class="section-title">Xidmətlər</h1>
-            <p class="lead">
-                Biznesinizin onlayn böyüməsi üçün uçdan-uca rəqəmsal marketinq xidmətləri.
-                Hər layihəni ölçülə bilən nəticələrə fokuslanaraq aparıram.
-            </p>
+            <header class="page-head">
+                <p class="page-eyebrow">Xidmətlər</p>
+                <h1 class="page-title">Biznesinizi onlayn <span class="hl">böyüdən</span> xidmətlər</h1>
+                <p class="page-lead">
+                    Uçdan-uca rəqəmsal marketinq — hər layihəni ölçülə bilən nəticələrə
+                    fokuslanaraq aparıram. Aşağıda ən çox müraciət olunan xidmətlər.
+                </p>
+            </header>
 
-            <div class="cards">
-                <article class="card">
-                    <h3>SEO Optimizasiyası</h3>
-                    <p>Texniki audit, açar söz araşdırması, on-page və link strategiyası ilə Google-da davamlı orqanik trafik.</p>
-                </article>
-                <article class="card">
-                    <h3>Sosial Media (SMM)</h3>
-                    <p>Instagram, Facebook və TikTok üçün məzmun planı, idarəetmə və icma qurma.</p>
-                </article>
-                <article class="card">
-                    <h3>Google Ads</h3>
-                    <p>Axtarış, display və YouTube reklamları — yüksək konversiya, aşağı klik xərci.</p>
-                </article>
-                <article class="card">
-                    <h3>Meta Ads (Facebook/Instagram)</h3>
-                    <p>Hədəflənmiş reklam kampaniyaları, retargeting və satış hunisinin qurulması.</p>
-                </article>
-                <article class="card">
-                    <h3>Kontent Marketinq</h3>
-                    <p>Bloq, məqalə və vizual məzmun strategiyası ilə brend etibarının artırılması.</p>
-                </article>
-                <article class="card">
-                    <h3>Marketinq Strategiyası</h3>
-                    <p>Rəqib analizi, auditoriya seqmentasiyası və büdcəyə uyğun ümumi rəqəmsal plan.</p>
-                </article>
+            <div class="svc-grid">
+                @foreach ([
+                    ['🔍', 'SEO Optimizasiyası', 'Texniki audit, açar söz araşdırması, on-page və link strategiyası ilə Google-da davamlı orqanik trafik.'],
+                    ['📱', 'Sosial Media (SMM)', 'Instagram, Facebook və TikTok üçün məzmun planı, idarəetmə və icma qurma.'],
+                    ['🎯', 'Google Ads', 'Axtarış, display və YouTube reklamları — yüksək konversiya, aşağı klik xərci.'],
+                    ['📢', 'Meta Ads', 'Hədəflənmiş Facebook/Instagram kampaniyaları, retargeting və satış hunisinin qurulması.'],
+                    ['✍️', 'Kontent Marketinq', 'Bloq, məqalə və vizual məzmun strategiyası ilə brend etibarının artırılması.'],
+                    ['🧭', 'Marketinq Strategiyası', 'Rəqib analizi, auditoriya seqmentasiyası və büdcəyə uyğun ümumi rəqəmsal plan.'],
+                ] as $i => [$icon, $title, $desc])
+                    <article class="svc-card">
+                        <div class="svc-top">
+                            <span class="svc-icon">{{ $icon }}</span>
+                            <span class="svc-no">{{ sprintf('%02d', $i + 1) }}</span>
+                        </div>
+                        <h3>{{ $title }}</h3>
+                        <p>{{ $desc }}</p>
+                        <span class="svc-arrow" aria-hidden="true">→</span>
+                    </article>
+                @endforeach
             </div>
 
             <div class="cta-band cta-inline">

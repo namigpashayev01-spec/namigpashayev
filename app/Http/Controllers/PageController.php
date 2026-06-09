@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PageController extends Controller
 {
@@ -13,6 +14,8 @@ class PageController extends Controller
     public function home()
     {
         return view('pages.home', [
+            // Ana səhifədə göstərmək üçün ən son 3 məqalə.
+            'posts' => array_slice(Blog::all(), 0, 3),
             'seo' => [
                 'title'       => 'Namig Pashayev — Rəqəmsal Marketinq üzrə Mütəxəssis',
                 'description' => 'Rəqəmsal marketinq üzrə mütəxəssis Namig Pashayev. SEO, SMM, Google Ads və rəqəmsal strategiya ilə biznesinizi onlayn böyüdün.',
@@ -36,25 +39,6 @@ class PageController extends Controller
                 'breadcrumbs' => [
                     ['name' => 'Ana səhifə', 'url' => route('home')],
                     ['name' => 'Xidmətlər',  'url' => route('services')],
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * Portfolio səhifəsi.
-     */
-    public function portfolio()
-    {
-        return view('pages.portfolio', [
-            'seo' => [
-                'title'       => 'Portfolio — Layihələr və Nəticələr | Namig Pashayev',
-                'description' => 'Həyata keçirdiyim rəqəmsal marketinq layihələri: SEO, reklam kampaniyaları və sosial media nəticələri ilə real case-lər.',
-                'canonical'   => route('portfolio'),
-                'keywords'    => 'marketinq portfolio, SEO case study, reklam nəticələri, layihələr',
-                'breadcrumbs' => [
-                    ['name' => 'Ana səhifə', 'url' => route('home')],
-                    ['name' => 'Portfolio',  'url' => route('portfolio')],
                 ],
             ],
         ]);
@@ -130,12 +114,24 @@ class PageController extends Controller
     }
 
     /**
-     * Bloq — məqalələr siyahısı.
+     * Bloq — məqalələr siyahısı (başlıq/kateqoriya üzrə axtarışla).
      */
-    public function blog()
+    public function blog(Request $request)
     {
+        $q = trim((string) $request->query('q', ''));
+
+        $posts = Blog::all();
+        if ($q !== '') {
+            $needle = mb_strtolower($q);
+            $posts = array_values(array_filter($posts, function ($post) use ($needle) {
+                return mb_strpos(mb_strtolower($post['title']), $needle) !== false
+                    || mb_strpos(mb_strtolower($post['category']), $needle) !== false;
+            }));
+        }
+
         return view('pages.blog', [
-            'posts' => Blog::all(),
+            'posts' => $posts,
+            'q'     => $q,
             'seo'   => [
                 'title'       => 'Bloq — Rəqəmsal Marketinq Məqalələri | Namig Pashayev',
                 'description' => 'Rəqəmsal marketinq, SEO, SMM və Google Ads üzrə faydalı məqalələr, məsləhətlər və ən son trendlər.',
@@ -217,5 +213,73 @@ class PageController extends Controller
         return redirect()
             ->route('contact')
             ->with('success', 'Təşəkkürlər, '.$data['name'].'! Mesajınız göndərildi. Tezliklə sizinlə əlaqə saxlayacam.');
+    }
+
+    /**
+     * Qiymət təklifi (modal) formasının serverdə işlənməsi.
+     * Modal bütün səhifələrdə olduğu üçün cavab geri (back) qaytarılır;
+     * səhvlər ayrıca "quote" error bag-ında saxlanır ki, əlaqə forması ilə
+     * qarışmasın və modal yenidən açıla bilsin.
+     */
+    public function sendQuote(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'q_name'    => ['required', 'string', 'max:120'],
+            'q_email'   => ['required', 'email', 'max:160'],
+            'q_phone'   => ['nullable', 'string', 'max:40'],
+            'q_service' => ['required', 'string', 'max:120'],
+            'q_budget'  => ['nullable', 'string', 'max:60'],
+            'q_message' => ['required', 'string', 'max:3000'],
+        ], [
+            'q_name.required'    => 'Zəhmət olmasa ad və soyadınızı yazın.',
+            'q_email.required'   => 'Zəhmət olmasa e-poçtunuzu yazın.',
+            'q_email.email'      => 'E-poçt ünvanı düzgün deyil.',
+            'q_service.required' => 'Zəhmət olmasa maraqlandığınız xidməti seçin.',
+            'q_message.required' => 'Layihə haqqında qısa məlumat yazın.',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator, 'quote')
+                ->withInput();
+        }
+
+        $data = $validator->validated();
+
+        // Sorğunu log faylına yazırıq. (Sonradan e-poçt və ya bazaya yönləndirmək
+        // üçün yalnız bu hissəni dəyişmək kifayətdir.)
+        logger()->info('Yeni qiymət təklifi sorğusu', $data);
+
+        return back()
+            ->with('quote_success', 'Təşəkkürlər, '.$data['q_name'].'! Qiymət təklifi sorğunuz göndərildi. 24 saat ərzində sizinlə əlaqə saxlayacağam.');
+    }
+
+    /**
+     * Lead magnet (pulsuz material) — e-poçt toplama.
+     * Səhvlər ayrıca "lead" bag-ında saxlanır; uğurda eyni səhifəyə qayıdılır.
+     */
+    public function subscribeLead(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'lead_name'  => ['nullable', 'string', 'max:120'],
+            'lead_email' => ['required', 'email', 'max:160'],
+        ], [
+            'lead_email.required' => 'Zəhmət olmasa e-poçtunuzu yazın.',
+            'lead_email.email'    => 'E-poçt ünvanı düzgün deyil.',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'lead')->withInput()->withFragment('material');
+        }
+
+        $data = $validator->validated();
+
+        // Lead-i log faylına yazırıq. (Sonradan Mailchimp/e-poçt siyahısına və ya
+        // bazaya yönləndirmək üçün yalnız bu hissəni dəyişmək kifayətdir.)
+        logger()->info('Yeni lead (pulsuz material)', $data);
+
+        return back()
+            ->with('lead_success', 'Təşəkkürlər! Checklist-i tezliklə e-poçtunuza göndərəcəyik.')
+            ->withFragment('material');
     }
 }

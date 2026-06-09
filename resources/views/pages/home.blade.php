@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('head')
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap">
-@endpush
-
 @push('jsonld')
 <script type="application/ld+json">
 {
@@ -14,7 +10,7 @@
     "url": "{{ route('home') }}",
     "email": "namigpashayev01@gmail.com",
     "knowsAbout": ["SEO", "SMM", "Google Ads", "Rəqəmsal Marketinq Strategiyası", "Kontent Marketinq"],
-    "sameAs": []
+    "sameAs": ["https://www.linkedin.com/in/namigpashayev/"]
 }
 </script>
 @endpush
@@ -52,7 +48,7 @@
                         Pulsuz konsultasiya
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </a>
-                    <a href="{{ route('portfolio') }}" class="hx-btn hx-btn-ghost">Layihələrə bax</a>
+                    <a href="{{ route('services') }}" class="hx-btn hx-btn-ghost">Xidmətlərə bax</a>
                 </div>
 
                 <ul class="hx-trust">
@@ -152,32 +148,55 @@
         </div>
     </section>
 
-    {{-- ===================== PROSES ===================== --}}
-    <section class="hx-process">
-        <div class="container">
-            <header class="hx-sechead hx-sechead-light reveal">
-                <p class="hx-kicker">02 — İş prosesim</p>
-                <h2>Xaosdan deyil, sistemdən başlayıram</h2>
-            </header>
+    {{-- ===================== PROSES (scroll ilə fırlanan tək 3D kür) ===================== --}}
+    <section class="hx-proc2" id="proses">
+        <div class="hx-proc2-track">
+            <div class="hx-proc2-sticky">
+                <div class="container">
+                    <header class="hx-proc2-head reveal">
+                        <p class="hx-kicker">02 — İş prosesim</p>
+                        <h2>Xaosdan deyil, sistemdən başlayıram</h2>
+                        <p class="hx-proc2-hint">↓ Sürüşdürün — kür fırlandıqca hər mərhələ açılır</p>
+                    </header>
 
-            <ol class="hx-steps">
-                <li class="hx-step reveal">
-                    <span class="hx-step-no">01</span>
-                    <div><h3>Analiz</h3><p>Biznes, rəqib və auditoriyanın araşdırılması, hədəflərin müəyyən edilməsi.</p></div>
-                </li>
-                <li class="hx-step reveal" style="--d:.08s">
-                    <span class="hx-step-no">02</span>
-                    <div><h3>Strategiya</h3><p>Kanallara, auditoriyaya və büdcəyə uyğun ölçüləbilən marketinq planı.</p></div>
-                </li>
-                <li class="hx-step reveal" style="--d:.16s">
-                    <span class="hx-step-no">03</span>
-                    <div><h3>İcra</h3><p>Kampaniyaların qurulması, məzmun və reklamların işə salınması.</p></div>
-                </li>
-                <li class="hx-step reveal" style="--d:.24s">
-                    <span class="hx-step-no">04</span>
-                    <div><h3>Optimizasiya</h3><p>Nəticələrin ölçülməsi və daimi yaxşılaşdırma — daha çox nəticə, daha az xərc.</p></div>
-                </li>
-            </ol>
+                    <div class="hx-proc2-grid">
+                        {{-- 3D vizual (yalnız desktop + WebGL) --}}
+                        <div class="hx-proc2-visual">
+                            <canvas id="process-canvas" class="hx-proc2-canvas" aria-hidden="true"></canvas>
+                            <div class="hx-proc2-progress" role="tablist" aria-label="Mərhələ naviqasiyası">
+                                <button type="button" class="hx-proc2-dot is-active" data-go="0" aria-label="Analiz"></button>
+                                <button type="button" class="hx-proc2-dot" data-go="1" aria-label="Strategiya"></button>
+                                <button type="button" class="hx-proc2-dot" data-go="2" aria-label="İcra"></button>
+                                <button type="button" class="hx-proc2-dot" data-go="3" aria-label="Optimizasiya"></button>
+                            </div>
+                        </div>
+
+                        {{-- Mərhələ məlumatları (3D rejimdə crossfade, mobildə siyahı) --}}
+                        <ol class="hx-proc2-panels">
+                            <li class="hx-proc2-panel is-active" data-stage="0">
+                                <span class="hx-proc2-no">01</span>
+                                <h3>Analiz</h3>
+                                <p>Biznes, rəqib və auditoriyanın araşdırılması, hədəflərin müəyyən edilməsi.</p>
+                            </li>
+                            <li class="hx-proc2-panel" data-stage="1">
+                                <span class="hx-proc2-no">02</span>
+                                <h3>Strategiya</h3>
+                                <p>Kanallara, auditoriyaya və büdcəyə uyğun ölçüləbilən marketinq planı.</p>
+                            </li>
+                            <li class="hx-proc2-panel" data-stage="2">
+                                <span class="hx-proc2-no">03</span>
+                                <h3>İcra</h3>
+                                <p>Kampaniyaların qurulması, məzmun və reklamların işə salınması.</p>
+                            </li>
+                            <li class="hx-proc2-panel" data-stage="3">
+                                <span class="hx-proc2-no">04</span>
+                                <h3>Optimizasiya</h3>
+                                <p>Nəticələrin ölçülməsi və daimi yaxşılaşdırma — daha çox nəticə, daha az xərc.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -188,6 +207,82 @@
             <div class="hx-metric reveal" style="--d:.08s"><strong>×3.2</strong><span>orta trafik artımı</span></div>
             <div class="hx-metric reveal" style="--d:.16s"><strong>5+</strong><span>il təcrübə</span></div>
             <div class="hx-metric reveal" style="--d:.24s"><strong>98%</strong><span>müştəri məmnunluğu</span></div>
+        </div>
+    </section>
+
+    {{-- ===================== LEAD MAGNET (pulsuz material) ===================== --}}
+    <section class="hx-lead" id="material">
+        <div class="container">
+            <div class="lm-card reveal">
+                <div class="lm-offer">
+                    <span class="lm-badge">Pulsuz</span>
+                    <span class="lm-icon" aria-hidden="true">📋</span>
+                    <h2>SEO Audit Checklist</h2>
+                    <p>Saytınızı Google üçün yoxlamağa imkan verən 25 addımlıq praktiki bələdçi.</p>
+                    <ul class="lm-points">
+                        <li>Texniki SEO yoxlaması</li>
+                        <li>On-page optimizasiya addımları</li>
+                        <li>Sürət və mobil uyğunluq</li>
+                    </ul>
+                </div>
+
+                <div class="lm-form-wrap">
+                    @if (session('lead_success'))
+                        <div class="lm-success">
+                            <span class="lm-success-ic">✓</span>
+                            <p>{{ session('lead_success') }}</p>
+                        </div>
+                    @else
+                        <h3>Pulsuz əldə edin</h3>
+                        <p class="lm-sub">E-poçtunuzu yazın — checklist dərhal sizə göndərilsin.</p>
+
+                        <form method="POST" action="{{ route('lead.subscribe') }}" class="lm-form" novalidate>
+                            @csrf
+                            <input type="text" name="lead_name" value="{{ old('lead_name') }}" placeholder="Adınız (istəyə bağlı)" aria-label="Adınız">
+                            <input type="email" name="lead_email" value="{{ old('lead_email') }}" placeholder="E-poçt ünvanınız" aria-label="E-poçt" required>
+                            @error('lead_email', 'lead') <span class="form-error">{{ $message }}</span> @enderror
+                            <button type="submit" class="btn btn-primary">Checklist-i göndər →</button>
+                            <p class="lm-note">Spam yox. İstədiyiniz vaxt abunəlikdən çıxa bilərsiniz.</p>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ===================== BLOQ ===================== --}}
+    <section class="hx-blog">
+        <div class="container">
+            <header class="hx-sechead hx-blog-head reveal">
+                <div>
+                    <p class="hx-kicker">03 — Bloq</p>
+                    <h2>Son məqalələr</h2>
+                </div>
+                <a href="{{ route('blog') }}" class="hx-btn hx-btn-ghost hx-blog-all">Bütün məqalələr →</a>
+            </header>
+
+            <div class="hx-blog-grid">
+                @foreach ($posts as $i => $post)
+                    <article class="hx-blog-card reveal" style="--d:{{ $i * 0.08 }}s">
+                        <a href="{{ route('blog.show', $post['slug']) }}" class="hx-blog-banner" aria-hidden="true" tabindex="-1">
+                            <span class="hx-blog-watermark">{{ \Illuminate\Support\Str::limit($post['category'], 12, '') }}</span>
+                            <div class="hx-blog-banner-row">
+                                <span class="hx-blog-cat">{{ $post['category'] }}</span>
+                                <span class="hx-blog-read">{{ $post['read'] }} dəq oxu</span>
+                            </div>
+                        </a>
+                        <div class="hx-blog-body">
+                            <time class="hx-blog-date" datetime="{{ $post['date'] }}">{{ \Illuminate\Support\Carbon::parse($post['date'])->translatedFormat('d F Y') }}</time>
+                            <h3><a href="{{ route('blog.show', $post['slug']) }}">{{ $post['title'] }}</a></h3>
+                            <p>{{ $post['excerpt'] }}</p>
+                            <a href="{{ route('blog.show', $post['slug']) }}" class="hx-blog-link">
+                                <span>Ardını oxu</span>
+                                <span class="hx-blog-arrow" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
         </div>
     </section>
 
@@ -207,3 +302,9 @@
 
 </div>
 @endsection
+
+@push('scripts')
+{{-- 3D proses vizualı (Three.js). Mobil cihazlarda skript özü işə düşmür. --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="{{ asset('js/process-3d.js') }}" defer></script>
+@endpush
