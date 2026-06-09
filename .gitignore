@@ -25,3 +25,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Müvəqqəti dizayn önizləmə şəkilləri (Claude Code tərəfindən yaradılan)
+/shot-*.png
+/home-*.png
